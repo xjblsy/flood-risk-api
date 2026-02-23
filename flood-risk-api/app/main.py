@@ -8,11 +8,13 @@ from .features import generate_features_for_prediction
 app = FastAPI(title="三都站洪水风险预测API")
 
 # 允许所有来源跨域（部署后可限制为您的GitHub Pages域名）
+# 配置 CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=["https://xjblsy.github.io"],  # 允许您的前端域名访问
+    allow_credentials=True,
+    allow_methods=["*"],      # 允许所有 HTTP 方法（包括 OPTIONS）
+    allow_headers=["*"],      # 允许所有请求头
 )
 
 # 启动时加载模型（全局变量）
@@ -63,3 +65,4 @@ async def predict(file: UploadFile = File(...)):
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
